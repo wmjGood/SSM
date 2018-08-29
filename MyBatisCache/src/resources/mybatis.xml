@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="jdbc.properties"></properties>
+    <!--<settings>
+        &lt;!&ndash;开启延迟加载  默认false关闭  true开启&ndash;&gt;
+        <setting name="lazyLoadingEnabled" value="true"/>
+        &lt;!&ndash;将积极加载改为消极加载及按需加载 &ndash;&gt;
+        <setting name="aggressiveLazyLoading" value="false"/>
+    </settings>-->
+<settings>
+    <setting name="cacheEnabled" value="true"/>
+</settings>
+
+    <typeAliases>
+        <package name="cn.cache.pojo"></package>
+    </typeAliases>
+    
+<plugins>
+    <!--拦截器-->
+    <plugin interceptor="com.github.pagehelper.PageInterceptor">
+        <!--数据库方言  -->
+        <property name="helperDialect" value="mysql"></property>
+    </plugin>
+</plugins>
+
+    <environments default="mysql">
+        <environment id="mysql">
+            <transactionManager type="JDBC"></transactionManager><!--事务JDBC-->
+            <dataSource type="POOLED"><!--Tomacat===JNDI   POOLED-->
+                <property name="driver" value="${jdbc.driver}"></property>
+                <property name="url" value="${jdbc.url}"></property>
+                <property name="username" value="${jdbc.username}"></property>
+                <property name="password" value="${jdbc.password}"></property>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <mapper resource="cn/cache/dao/TeacherMapper.xml"></mapper>
+    </mappers>
+</configuration>

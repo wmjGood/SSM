@@ -1,0 +1,19 @@
+
+//创建存储过程
+DELIMITER //     分隔符
+  CREATE PROCEDURE myProc3(IN id INT,OUT p_name VARCHAR(10))    创建存储过程  IN输入参数  OUT 输出参数
+    BEGIN
+    SELECT tname INTO p_name FROM mybatis.`teacher` WHERE tid=id;
+    END//
+DELIMITER ;
+
+
+
+#查看所有存储过程
+SHOW PROCEDURE  STATUS 
+#查看指定的数据库的存储过程
+SHOW PROCEDURE  STATUS  WHERE Db='mybatis'
+#调用存储过程
+SET @id=2;
+SET @p_name='1';  #先开始随便赋值
+CALL myProc3(@id,@sname);

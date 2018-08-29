@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cache.dao.TeacherMapper">
+
+    <!--二级缓存-->
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache" ></cache>
+
+    <select id="findAllByTeacher"  resultType="Teacher" useCache="true">
+      SELECT tid,tname,id FROM teacher
+     <where>
+         id=#{xxx}
+     </where>
+    </select>
+
+    <update id="updateTeacher" parameterType="int">
+        update teacher
+        <set>
+            tname=#{tname}
+        </set>
+        <where>
+            tid=#{tid}
+        </where>
+    </update>
+
+    <select id="findAllByPage" resultType="Teacher" >
+    SELECT tid,tname,id FROM teacher
+    </select>
+
+
+    <!--存储过程
+    1.使用{}
+
+    {call myProc3(
+        #{tid, mode=IN,jdbcType=INTEGER},
+        #{tname,mode=OUT,jdbcType=VARCHAR}
+    )};
+    2.使用CDATA
+
+	    <![CDATA[
+
+         {call myProc3 (
+          #{tid, mode=IN,jdbcType=INTEGER},
+        #{tname,mode=OUT,jdbcType=VARCHAR}
+         )}
+
+     ]]>
+
+    -->
+    <select id="findAllByProc" parameterType="Teacher" statementType="CALLABLE" useCache="false">
+        <![CDATA[
+           /*myProc3与数据库创建的存储过程名字相同 */
+         {call myProc3 (
+          #{tid, mode=IN,jdbcType=INTEGER},
+        #{tname,mode=OUT,jdbcType=VARCHAR}
+         )}
+     ]]>
+    </select>
+</mapper>
